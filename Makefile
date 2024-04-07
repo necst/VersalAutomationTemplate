@@ -113,10 +113,8 @@ build_and_pack:
 	make pack
 
 # Clean objects
-clean: clean_aie clean_mutual_info clean_data_movers clean_hw clean_sw
+clean: clean_aie clean_data_movers clean_hw clean_sw
 
-clean_mutual_info:
-	make -C ./mutual_info clean
 clean_aie:
 	make -C ./aie clean
 
