@@ -64,4 +64,7 @@ int main(int argc, char *argv[]) {
         std::cout << buffer[i] << std::endl;
     }
     delete[] buffer;
+
+    // Note that: you may also have a code that runs the AI Engine from your kernel, and so a testbench
+    // that simulates the entire application flow. It is useful, but still I would suggest to use single kernel testbench too.
 }
