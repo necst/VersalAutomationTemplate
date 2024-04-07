@@ -30,18 +30,20 @@ SOFTWARE.
 
 extern "C" {
 
-void setup_aie(float tx, float ty, float ang,float n_couples, hls::stream<float>& s) {
-	#pragma HLS interface axis port=s
-	
-	#pragma HLS interface s_axilite port=tx bundle=control
-	#pragma HLS interface s_axilite port=ty bundle=control
-	#pragma HLS interface s_axilite port=ang bundle=control
-	#pragma HLS interface s_axilite port=n_couples bundle=control
+void setup_aie(float size, hls::stream<float>& s) {
+	#pragma HLS interface s_axilite port=size bundle=control
 	#pragma HLS interface s_axilite port=return bundle=control
 
-	s.write(tx);
-	s.write(ty);
-	s.write(ang);
-	s.write(n_couples);
+	// size represents the number of elements. But the AI Engine uses the number of loops, and each
+	// loop uses 4 elements. So we need to convert the number of elements to the number of loops.
+	float size_loop = size/4;
+
+	s.write(size_loop);
+	for (int j = 0; j < size_loop; j++) {
+		s.write(1);
+		s.write(2);
+		s.write(3);
+		s.write(4);
+	}
 }
 }

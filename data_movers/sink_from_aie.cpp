@@ -33,16 +33,16 @@ extern "C" {
 // We need 1 write what the AIE sends to the PL, into memory
 // We need 1 input from host
 
-void setup_mutualInfo(
-    hls::stream<float >& input_stream, 
-    ap_uint<float>* output, 
+void sink_from_aie(
+    hls::stream<float>& input_stream, 
+    float* output, 
     int size)
 {
 
 // PRAGMA for stream
-#pragma HLS interface axis port=coords_in // there are several options, just look for them :) 
+#pragma HLS interface axis port=input_stream // there are several options, just look for them :) 
 // PRAGMA for memory interation - AXI master-slave
-#pragma HLS INTERFACE m_axi port=input_stream depth=100 offset=slave bundle=gmem1
+#pragma HLS INTERFACE m_axi port=output depth=100 offset=slave bundle=gmem1
 #pragma HLS INTERFACE s_axilite port=output bundle=control
 // PRAGMA for AXI-LITE : required to move params from host to PL
 #pragma HLS interface s_axilite port=size bundle=control
@@ -51,7 +51,7 @@ void setup_mutualInfo(
     for (int i = 0; i < size; i++)
     {
         float x = input_stream.read();
-        float_transformed[i] = x;
+        output[i] = x;
     }
 }
 }

@@ -60,17 +60,3 @@ aie_simulate_x86:
 	@echo "INFO:- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 	@echo "INFO:Running x86simulator..."
 	@x86simulator --pkg-dir=./Work
-
-CONFIG = ../default.cfg
-include ${CONFIG}
-
-PI := 3.14159265359
-HALF_ROT := 180.0
-generate_input_data:
-	$(info )
-	$(info ********** Generating aie_simulate input data **********)
-	$(info - TX, TY, ANG       $(TX), $(TY), $(ANG))
-	$(info - N_COUPLES         $(N_COUPLES))
-	$(info ********************************************************)
-	$(info )
-	printf "$(TX)\n$(TY)\n$(shell echo "scale=6; ${ANG}*${PI}/${HALF_ROT}" | bc)\n$(N_COUPLES)\n" > ./data/s0.txt

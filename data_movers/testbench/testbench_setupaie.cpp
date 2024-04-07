@@ -37,26 +37,21 @@ void read_from_stream(float *buffer, hls::stream<float> &stream, size_t size) {
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 5) {
-        std::cerr << "usage: ./testbench_setupaie <tx> <ty> <ang> <n_couples>" << std::endl;
-        return -1;
+    // In a testbench, you will use you kernel as a C function
+    // You will need to create the input and output of your function
+    hls::stream<float> s;
+    float size = 16;
+    setup_aie(size, s);
+
+    // If the function worked I can print values in the stream and check them
+    for(unsigned int i = 0; i < size; i++) {
+        std::cout << s.read() << std::endl;
     }
+    // Here you will se a warning: THIS IS THE MOST IMPORTANT PART OF THE TESTBENCH
 
-    const float TX = atof(argv[1]);
-    const float TY = atof(argv[2]);
-    const float ANG_DEG = atof(argv[3]);
-    const float ANG = (ANG_DEG * M_PI) / 180.f; ; // radians
-    const float n_couples = atof(argv[4]);
+    // Indeed, in testbench you can check if you stream and loop are correctly sized. 
+    // Warning may be caused by your testbench, as now, or by wrongly sized loops in your code.
 
-    // std::printf("input: tx=%f, ty=%f, ang=%f, n_couples=%f\n", TX, TY, ANG, n_couples);
-
-    hls::stream<float> coords_in;
-
-    setup_aie(TX, TY, ANG, n_couples, coords_in);
-
-    float output[5];
-    read_from_stream(output, coords_in, 4); // TODO, sono 5, non 4 (manca la scrittura di kernel_index in setup_aie)
-
-    // std::printf("coords_in: tx=%f, ty=%f, ang=%f, n_couples=%f, k_index=%f\n", output[0], output[1], output[2], output[3], output[4]);
-    std::printf("%f\n%f\n%f\n%f\n%f\n", output[0], output[1], output[2], output[3], output[4]);
+    // try to change the for-loop size, from "size" to "size+1" and see that the output is correct
+    return 0;
 }

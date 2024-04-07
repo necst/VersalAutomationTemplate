@@ -46,41 +46,25 @@ include ${CONFIG}
 
 XOCCFLAGS := --platform $(PLATFORM) -t $(TARGET)  -s -g
 
-compile: setup_aie_$(TARGET).xo setup_mutualInfo_$(TARGET).xo 
+compile: setup_aie_$(TARGET).xo sink_from_aie_$(TARGET).xo 
 
 setup_aie_$(TARGET).xo: ./setup_aie.cpp
 	v++ $(XOCCFLAGS) --kernel setup_aie -c -o $@ $<
 
-setup_mutualInfo_$(TARGET).xo: ./setup_mutualInfo.cpp
-	v++ $(XOCCFLAGS) --kernel setup_mutualInfo -c -o $@ $<
+sink_from_aie_$(TARGET).xo: ./sink_from_aie.cpp
+	v++ $(XOCCFLAGS) --kernel sink_from_aie -c -o $@ $<
 
-testbench_setminfo: testbench/testbench_setminfo.cpp
+testbench_sink_from_aie: testbench/testbench_sink_from_aie.cpp
 	g++ -std=c++14 -I. -I$(XILINX_HLS)/include -o testbench/$@ $^ -O2 `pkg-config --libs opencv` `pkg-config --cflags opencv`
 
-run_testbench_setminfo:
-	@mkdir -p testbench/dataset_output
-	@mkdir -p testbench/dataset_output_sw
-	cd testbench && ./testbench_setminfo $(TX) $(TY) $(ANG) $(N_COUPLES)
+run_testbench_sink_from_aie: testbench_sink_from_aie
+	cd testbench && ./testbench_sink_from_aie 
 
 testbench_setupaie: testbench/testbench_setupaie.cpp
 	g++ -std=c++14 -I. -I$(XILINX_HLS)/include -o testbench/$@ $^ -O2
 
-run_testbench_setupaie:
-	cd testbench && ./testbench_setupaie $(TX) $(TY) $(ANG) $(N_COUPLES)
-
-testbench_all: testbench_setupaie testbench_setminfo
-	cd testbench && (./testbench_setupaie $(TX) $(TY) $(ANG) $(N_COUPLES) > ../../aie/data/s0.txt)
-	$(warning NOT TESTED: AIE X86 MUST BE COMPILED MANUALLY)
-	make -C ../aie aie_simulate_x86
-	cp ../aie/x86simulator_output/data/result.txt testbench/coords_in.txt
-	@mkdir -p testbench/dataset_output
-	@mkdir -p testbench/dataset_output_sw
-	cd testbench && ./testbench_setminfo $(TX) $(TY) $(ANG) $(N_COUPLES)
-
-testbench_noaie: testbench_setminfo
-	@mkdir -p testbench/dataset_output
-	@mkdir -p testbench/dataset_output_sw
-	cd testbench && ./testbench_setminfo $(TX) $(TY) $(ANG) $(N_COUPLES)
+run_testbench_setupaie: testbench_setupaie
+	cd testbench && ./testbench_setupaie
 
 ################## clean up
 clean:
