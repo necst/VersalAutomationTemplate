@@ -29,37 +29,6 @@ SOFTWARE.
 #include "../sink_from_aie.cpp"
 #include <cmath>
 
-void write_into_stream(uint8_t *buffer, hls::stream<INPUT_DATA_TYPE> &stream, size_t size) {
-    for (unsigned int i = 0; i < size; i++) {
-        stream.write(buffer[i]);
-    }
-}
-
-void write_into_stream(float *buffer, hls::stream<ap_axis<32, 0, 0, 0>> &stream, size_t size) {
-    for (unsigned int i = 0; i < size; i++) {
-        ap_axis<32, 0, 0, 0> x;
-        x.data = buffer[i];
-        // x.keep_all();
-        stream.write(x);
-    }
-}
-
-void write_into_stream(int32_t *buffer, hls::stream<ap_axis<32, 0, 0, 0>> &stream, size_t size) {
-    for (unsigned int i = 0; i < size; i++) {
-        ap_axis<32, 0, 0, 0> x;
-        x.data = buffer[i];
-        // x.keep_all();
-        stream.write(x);
-    }
-}
-
-template<typename T>
-void read_from_stream(T *buffer, hls::stream<T> &stream, size_t size) {
-    for (unsigned int i = 0; i < size; i++) {
-        buffer[i] = stream.read();
-    }
-}
-
 
 int main(int argc, char *argv[]) { 
     // This testbech will test the sink_from_aie kernel
@@ -72,11 +41,25 @@ int main(int argc, char *argv[]) {
     // I create the buffer to write into memory
     float *buffer = new float[16];
 
-    // I have to read the output of AI Engine from the file. Otherwise, I have no input for my testbench
-    //TODO: AGGIUNGERE LOGICA PER LEGGERE output AIE
+    // I have to read the output of AI Engine from the file. 
+    // Otherwise, I have no input for my testbench
+    std::ifstream file;
+    file.open("../../aie/x86simulator_output/data/out_plio_sink_1.txt");
+    if (!file) {
+        std::cerr << "Unable to open file ../../aie/x86simulator_output/out_plio_sink.txt";
+        return 1;
+    }
+
+    for (int i = 0; i < size; i++) {
+        float x;
+        file >> x;
+        s.write(x);
+    }
 
     sink_from_aie(s,buffer,size);
-    // if the kernel is correct, it will contains the expected data. I can print them, for example, to check
+
+    // if the kernel is correct, it will contains the expected data.
+    // I can print them, for example, to check that they are equal to the output of AIE
     for (unsigned int i = 0; i < size; i++) {
         std::cout << buffer[i] << std::endl;
     }
