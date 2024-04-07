@@ -52,6 +52,7 @@ int main(int argc, char* argv[]) {
     // Indeed, in testbench you can check if you stream and loop are correctly sized. 
     // Warning may be caused by your testbench, as now, or by wrongly sized loops in your code.
 
-    // try to change the for-loop size, from "size" to "size+1" and see that the output is correct
+    // try to change the for-loop size, from "size" to "size+1" and see that the output is correct...
+    // why we have to add +1?
     return 0;
 }
