@@ -1,0 +1,1 @@
+National Cancer Institute Clinical Proteomic Tumor Analysis Consortium (CPTAC), “Radiology data from the clinical proteomic tumor analysis consortium lung adenocarcinoma [cptac-luad] collection [data set],” The Cancer Imaging Archive, 2018. [Online]. Available: https://doi.org/10.7937/k9/tcia.2018.pat12tbs
