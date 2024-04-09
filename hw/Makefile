@@ -40,7 +40,7 @@ XOCCLFLAGS := --kernel_frequency 200 --platform $(PLATFORM) -t $(TARGET)  -s -g
 
 AIE_OBJ := ../aie/libadf.a
 XOS     := ../data_movers/setup_aie_$(TARGET).xo 
-XOS     += ../data_movers/setup_sink_from_aie_$(TARGET).xo 
+XOS     += ../data_movers/sink_from_aie_$(TARGET).xo 
 XSA_OBJ := overlay_$(TARGET).xsa
 XCLBIN  := overlay_$(TARGET).xclbin
 
