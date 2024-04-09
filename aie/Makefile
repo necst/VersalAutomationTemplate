@@ -23,6 +23,7 @@
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 all: aie_compile aie_simulate
 all_x86: aie_compile_x86 aie_simulate_x86
+PLATFORM := /opt/xilinx/platforms/xilinx_vck5000_gen4x8_xdma_2_202210_1/hw/xilinx_vck5000_gen4x8_xdma_2_202210_1.xsa
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #Clean build products
@@ -40,23 +41,23 @@ libadf.a: src/*
 	@echo "INFO:Running aiecompiler for hw..."
 	@rm -rf Work libadf.a
 	@mkdir -p Work
-	@aiecompiler --target=hw --include="src" --include="../common" --workdir=./Work --heapsize=2048 --stacksize=4096 --xlopt=2 -v src/graph.cpp
+	@aiecompiler --target=hw --platform=$(PLATFORM) --include="src" --include="../common" --workdir=./Work --heapsize=2048 --stacksize=4096 --xlopt=2 -v src/graph.cpp
 	
 aie_compile_x86: 
 	@echo "INFO:- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 	@echo "INFO:Running aiecompiler for x86sim..."
 	@rm -rf Work libadf.a
 	@mkdir -p Work
-	@aiecompiler --target=x86sim --include="src" --include="../common" --workdir=./Work src/graph.cpp
+	@aiecompiler --target=x86sim --platform=$(PLATFORM) --include="src" --include="../common" --workdir=./Work src/graph.cpp
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #Simulate AIE code
 aie_simulate:
 	@echo "INFO:- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 	@echo "INFO:Running aiesimulator..."
-	@aiesimulator --pkg-dir=./Work --profile
+	@aiesimulator -v --pkg-dir=./Work --profile
 
 aie_simulate_x86:
 	@echo "INFO:- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 	@echo "INFO:Running x86simulator..."
-	@x86simulator --pkg-dir=./Work
+	@x86simulator -v --pkg-dir=./Work

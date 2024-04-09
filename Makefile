@@ -40,16 +40,13 @@ CONFIG = default.cfg
 include ${CONFIG}
 
 # Build hareware (xclbin) objects
-build_hw: compile_krnl_mutual_info compile_data_movers compile_aie hw_link
+build_hw: compile_data_movers compile_aie hw_link
 
 compile_aie:
 	make -C ./aie aie_compile
 
 compile_krnl_histogram:
 	make -C ./krnl_histogram compile TARGET=$(TARGET) PLATFORM=$(PLATFORM)
-
-compile_krnl_mutual_info:
-	make -C ./mutual_info compile TARGET=$(TARGET) PLATFORM=$(PLATFORM)
 
 compile_data_movers:
 	make -C ./data_movers compile TARGET=$(TARGET) PLATFORM=$(PLATFORM)
