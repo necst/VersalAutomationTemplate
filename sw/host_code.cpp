@@ -35,7 +35,7 @@ SOFTWARE.
 
 // For hw emulation, run in sw directory: source ./setup_emu.sh -s on
 
-#define DEVICE_ID   
+#define DEVICE_ID 0
 
 
 // every top function input that must be passed from the host to the kernel must have a unique index starting from 0
