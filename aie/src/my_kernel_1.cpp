@@ -10,7 +10,7 @@
 void my_kernel_function (input_stream<float>* restrict input, output_stream<float>* restrict output)
 {
     // read from one stream and write to another
-    uint8 tot_num = readincr(input); // the first number tells me how many 32_vectors are in input
+    uint8 tot_num = readincr(input); // the first number tells me how many loops I have to perform
 
     for (int i = 0; i < tot_num; i++)
     {

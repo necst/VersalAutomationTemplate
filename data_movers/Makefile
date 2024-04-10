@@ -37,9 +37,6 @@ PLATFORM := xilinx_vck5000_gen4x8_xdma_2_202210_1
 
 TARGET := hw
 
-CONFIG = ../default.cfg
-include ${CONFIG}
-
 .phony: clean
 
 ################## hardware build 
@@ -54,9 +51,10 @@ setup_aie_$(TARGET).xo: ./setup_aie.cpp
 sink_from_aie_$(TARGET).xo: ./sink_from_aie.cpp
 	v++ $(XOCCFLAGS) --kernel sink_from_aie -c -o $@ $<
 
+# as every C++ program, you may add libraies like: `pkg-config --libs opencv` `pkg-config --cflags opencv`
 testbench_sink_from_aie: testbench/testbench_sink_from_aie.cpp
-	g++ -std=c++14 -I. -I$(XILINX_HLS)/include -o testbench/$@ $^ -O2 `pkg-config --libs opencv` `pkg-config --cflags opencv`
-
+	g++ -std=c++14 -I. -I$(XILINX_HLS)/include -o testbench/$@ $^ -O2  
+	
 run_testbench_sink_from_aie: testbench_sink_from_aie
 	cd testbench && ./testbench_sink_from_aie 
 
