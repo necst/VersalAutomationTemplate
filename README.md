@@ -22,7 +22,7 @@ src - contains the code.
 _make aie_compile_x86_ : compile your code for x86 architecture.  
 _make aie_simulate_x86_ : simulate your x86 architecture.  
 _make aie_compile_ : compile your code for VLIW architecture, as your final hardware for HW ad HW_EMU.  
-_make aie_compile_x86_ : simulate your code for VLIW architecture, as your final hardware.  
+_make aie_simulate_ : simulate your code for VLIW architecture, as your final hardware.  
 _make clean_ : removes all the output file created by the commands listed above.  
 
 ### data_movers
