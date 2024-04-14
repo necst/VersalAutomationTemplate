@@ -65,5 +65,5 @@ $(EXECUTABLE): $(HOST_SRCS)
 
 ################## clean up
 clean:
-	$(RM) -r _x .Xil *.ltx *.log *.jou *.info host_overlay.exe *.xo *.xo.* *.str *.xclbin .run
+	$(RM) -r _x .Xil *.ltx *.log *.jou *.info host_overlay.exe *.xo *.xo.* *.str *.xclbin .run *.wdb *.json *.wcfg *.protoinst *.csv
 	

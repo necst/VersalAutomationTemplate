@@ -33,7 +33,8 @@ help::
 	$(ECHO) "      Command to remove all the generated files."
 	$(ECHO) ""
 
-PLATFORM := xilinx_vck5000_gen4x8_xdma_2_202210_1
+PLATFORM := xilinx_vck5000_gen4x8_qdma_2_202220_1
+#PLATFORM := xilinx_vck5000_gen4x8_xdma_2_202210_1
 TARGET := hw
 
 XOCCLFLAGS := --kernel_frequency 200 --platform $(PLATFORM) -t $(TARGET)  -s -g
@@ -55,5 +56,5 @@ $(XSA_OBJ): $(XOS) $(AIE_OBJ)
 	v++ -l $(XOCCFLAGS) $(XOCCLFLAGS) --config xclbin_overlay.cfg -o $@ $^
 
 clean:
-	$(RM) -r _x .Xil .ipcache *.ltx *.log *.jou *.info *.xclbin *.xo.* *.str *.xsa *.cdo.bin *bif *BIN *.package_summary *.link_summary
+	$(RM) -r _x .Xil .ipcache *.ltx *.log *.sh *.jou *.info *.xclbin *.xo.* *.str *.xsa *.cdo.bin *bif *BIN *.package_summary *.link_summary *.txt *.bin && rm -rf cfg emulation_data sim
 	
