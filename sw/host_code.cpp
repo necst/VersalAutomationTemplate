@@ -51,7 +51,6 @@ SOFTWARE.
 bool get_xclbin_path(std::string& xclbin_file);
 std::ostream& bold_on(std::ostream& os);
 std::ostream& bold_off(std::ostream& os);
-void print_header(int n_couples, float TX, float TY, float ANG_DEG);
 
 int checkResult(float* input, float* output, int size) {
     for (int i = 0; i < size; i++) {

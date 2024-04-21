@@ -60,4 +60,4 @@ aie_simulate:
 aie_simulate_x86:
 	@echo "INFO:- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 	@echo "INFO:Running x86simulator..."
-	@x86simulator -v --pkg-dir=./Work
+	@x86simulator --pkg-dir=./Work
