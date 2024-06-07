@@ -25,12 +25,14 @@ SOFTWARE.
 
 #include <ap_int.h>
 #include <hls_stream.h>
+#include <hls_math.h>
 #include <ap_axi_sdata.h>
+#include "../common/common.h"
 
 
 extern "C" {
 
-void setup_aie(int size, float* input, hls::stream<float>& s) {
+void setup_aie(int32_t size, int32_t* input, hls::stream<ap_int<sizeof(int32_t) * 8 * 4>>& s) {
 
 	#pragma HLS interface m_axi port=input depth=100 offset=slave bundle=gmem0
 	#pragma HLS interface axis port=s
@@ -40,14 +42,20 @@ void setup_aie(int size, float* input, hls::stream<float>& s) {
 
 	// size represents the number of elements. But the AI Engine uses the number of loops, and each
 	// loop uses 4 elements. So we need to convert the number of elements to the number of loops.
-	float size_loop = (float) size/4;
+	int32_t size_loop = size/4;
+	ap_int<sizeof(int32_t)*8*4> tmp;
+	tmp.range(31,0) = size_loop;
+	tmp.range(63,32) = 0;
+	tmp.range(95,64) = 0;
+	tmp.range(127,96) = 0;
+	s.write(tmp);
 
-	s.write(size_loop);
 	for (int j = 0; j < size_loop; j++) {
-		s.write(input[j*4+0]);
-		s.write(input[j*4+1]);
-		s.write(input[j*4+2]);
-		s.write(input[j*4+3]);
+		tmp.range(31,0) = input[j*4+0];
+		tmp.range(63,32) = input[j*4+1];
+		tmp.range(95,64) = input[j*4+2];
+		tmp.range(127,96) = input[j*4+3];
+		s.write(tmp);
 	}
 }
 }

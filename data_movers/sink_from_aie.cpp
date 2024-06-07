@@ -34,8 +34,8 @@ extern "C" {
 // We need 1 input from host
 
 void sink_from_aie(
-    hls::stream<float>& input_stream, 
-    float* output, 
+    hls::stream<int32_t>& input_stream, 
+    int32_t* output, 
     int size)
 {
 
@@ -50,7 +50,7 @@ void sink_from_aie(
 
     for (int i = 0; i < size; i++)
     {
-        float x = input_stream.read();
+        int32_t x = input_stream.read();
         output[i] = x;
     }
 }

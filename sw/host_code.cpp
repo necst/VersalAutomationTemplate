@@ -51,11 +51,12 @@ bool get_xclbin_path(std::string& xclbin_file);
 std::ostream& bold_on(std::ostream& os);
 std::ostream& bold_off(std::ostream& os);
 
-int checkResult(float* input, float* output, int size) {
+int checkResult(int32_t* input, int32_t* output, int size) {
     for (int i = 0; i < size; i++) {
         if (input[i] != output[i]) {
             std::cout << "Error at index " << i << ": " << input[i] << " != " << output[i] << std::endl;
             return EXIT_FAILURE;
+
         }
     }
     std::cout << "Test passed!" << std::endl;
@@ -64,9 +65,9 @@ int checkResult(float* input, float* output, int size) {
 
 int main(int argc, char *argv[]) {
     
-    int size = 32;
+    int32_t size = 32;
 
-    float nums[size];
+    int32_t nums[size];
     for (int i = 0; i < size; i++)
         nums[i] = i + 1;
 
@@ -92,8 +93,8 @@ int main(int argc, char *argv[]) {
     xrtMemoryGroup bank_input  = krnl_setup_aie.group_id(arg_setup_aie_input);
 
     // create device buffers - if you have to load some data, here they are
-    xrt::bo buffer_setup_aie= xrt::bo(device, size * sizeof(float), xrt::bo::flags::normal, bank_input); 
-    xrt::bo buffer_sink_from_aie = xrt::bo(device, size * sizeof(float), xrt::bo::flags::normal, bank_output); 
+    xrt::bo buffer_setup_aie= xrt::bo(device, size * sizeof(int32_t), xrt::bo::flags::normal, bank_input); 
+    xrt::bo buffer_sink_from_aie = xrt::bo(device, size * sizeof(int32_t), xrt::bo::flags::normal, bank_output); 
 
     // create runner instances
     xrt::run run_setup_aie   = xrt::run(krnl_setup_aie);
@@ -121,7 +122,7 @@ int main(int argc, char *argv[]) {
 
     // read the output buffer
     buffer_sink_from_aie.sync(XCL_BO_SYNC_BO_FROM_DEVICE);
-    float output_buffer[size];
+    int32_t output_buffer[size];
     buffer_sink_from_aie.read(output_buffer);
 
     // ---------------------------------CONFRONTO PER VERIFICARE L'ERRORE--------------------------------------
@@ -166,4 +167,3 @@ std::ostream& bold_off(std::ostream& os)
 {
     return os << "\e[0m";
 }
-

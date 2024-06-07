@@ -36,10 +36,10 @@ int main(int argc, char *argv[]) {
     // and will write it into memory
 
     // I will create a stream of data
-    hls::stream<float> s;
-    float size = 16;
+    hls::stream<int32_t> s;
+    int size = 32;
     // I create the buffer to write into memory
-    float *buffer = new float[16];
+    int *buffer = new int[size];
 
     // I have to read the output of AI Engine from the file. 
     // Otherwise, I have no input for my testbench
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     }
 
     for (int i = 0; i < size; i++) {
-        float x;
+        int x;
         file >> x;
         s.write(x);
     }

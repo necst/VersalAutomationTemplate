@@ -7,14 +7,15 @@
 //API REFERENCE for STREAM: 
 // https://docs.amd.com/r/ehttps://docs.amd.com/r/en-US/ug1079-ai-engine-kernel-coding/Reading-and-Advancing-an-Input-Streamn-US/ug1079-ai-engine-kernel-coding/Reading-and-Advancing-an-Input-Stream
 
-void my_kernel_function (input_stream<float>* restrict input, output_stream<float>* restrict output)
+void my_kernel_function (input_stream<int32_t>* restrict input, output_stream<int32_t>* restrict output)
 {
     // read from one stream and write to another
-    uint8 tot_num = readincr(input); // the first number tells me how many loops I have to perform
-
+    aie::vector<int32_t,4> x= readincr_v4(input); // the first number tells me how many loops I have to perform
+    int tot_num = x[0];
+    printf("Value of tot_num: %d\n", tot_num);
     for (int i = 0; i < tot_num; i++)
     {
-        aie::vector<float,4> x = readincr_v<4>(input); // 1 Float = 32 bit. 32 x 4 = 128 bit -> 128-bit wide stream operation.
+        aie::vector<int32_t,4> x = readincr_v<4>(input); // 1 Float = 32 bit. 32 x 4 = 128 bit -> 128-bit wide stream operation.
         writeincr(output,x);
     }   
 }

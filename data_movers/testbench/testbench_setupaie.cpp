@@ -39,18 +39,14 @@ void read_from_stream(float *buffer, hls::stream<float> &stream, size_t size) {
 int main(int argc, char* argv[]) {
     // In a testbench, you will use you kernel as a C function
     // You will need to create the input and output of your function
-    hls::stream<float> s;
-    float size = 32;
-    float *input = new float[32];
+    hls::stream<ap_int<sizeof(float)*8*4>> s;
+    int size = 32;
+    int *input = new int[32];
     for (unsigned int i = 0; i < size; i++) {
         input[i] = i;
     }
     setup_aie(size, input, s);
 
-    // If the function worked I can print values in the stream and check them
-    for(unsigned int i = 0; i < size +1 ; i++) {
-        std::cout << s.read() << std::endl;
-    }
     // Here you will se a warning: THIS IS THE MOST IMPORTANT PART OF THE TESTBENCH
 
     // Indeed, in testbench you can check if you stream and loop are correctly sized. 
@@ -62,15 +58,20 @@ int main(int argc, char* argv[]) {
     // And now? Since you want to effectively test your AIE...this code may practically write the AIE input
     // write into data 
     
+    // If the function worked I can print values in the stream and check them
     std::ofstream file;
     file.open("../../aie/data/in_plio_source_1.txt");
     if (file.is_open()) {
-        //firstly I write the size, which will be, according to setup_aie, size/4
-        file << size/4 << std::endl;
-        for (unsigned int i = 0; i < size; i++) {
-            file << input[i] << std::endl;
+        // read the stream of ap_int
+        ap_int<sizeof(int) * 8 * 4> tmp;
+        for (unsigned int i = 0; i < (size/4)+1; i++) {
+            tmp = s.read();
+            for (unsigned int j = 0; j < 4; j++) {
+                float val = tmp.range(31 + j * 32, j * 32);
+                file << val << std::endl;
+                std::cout<<val<<std::endl;
+            }
         }
-        file.close();
     } else {
         std::cout << "Error opening file" << std::endl;
     }
