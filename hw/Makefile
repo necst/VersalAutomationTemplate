@@ -33,8 +33,8 @@ help::
 	$(ECHO) "      Command to remove all the generated files."
 	$(ECHO) ""
 
-PLATFORM := xilinx_vck5000_gen4x8_qdma_2_202220_1
-#PLATFORM := xilinx_vck5000_gen4x8_xdma_2_202210_1
+#PLATFORM := xilinx_vck5000_gen4x8_qdma_2_202220_1
+PLATFORM := xilinx_vck5000_gen4x8_xdma_2_202210_1
 TARGET := hw
 
 XOCCLFLAGS := --kernel_frequency 200 --platform $(PLATFORM) -t $(TARGET)  -s -g
