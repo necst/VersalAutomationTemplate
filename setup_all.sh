@@ -9,8 +9,8 @@ print_usage() {
 }
 
 # Variables for the paths of configuration scripts
-VITIS_22_1="/xilinx/software/Vitis/2022.1/settings64.sh"
-VITIS_22_2="/xilinx/software/Vitis/2022.2/settings64.sh"
+VITIS_22_1="/home/xilinx/software/Vitis/2022.1/settings64.sh"
+VITIS_22_2="/home/xilinx/software/Vitis/2022.2/settings64.sh"
 
 # Variable for the --shell parameter, defaulting to null
 SHELL_PARAM=null
