@@ -33,8 +33,13 @@ help::
 	$(ECHO) "  make clean"
 	$(ECHO) "      Command to remove all the generated files."
 
-#PLATFORM := xilinx_vck5000_gen4x8_xdma_2_202210_1
-PLATFORM := xilinx_vck5000_gen4x8_qdma_2_202220_1
+SHELL_NAME := null
+PLATFORM := null
+ifeq ($(SHELL_NAME), qdma)
+    PLATFORM := /opt/xilinx/platforms/xilinx_vck5000_gen4x8_qdma_2_202220_1/hw/xilinx_vck5000_gen4x8_qdma_2_202220_1.xsa
+else ifeq ($(SHELL_NAME), xdma)
+    PLATFORM := /opt/xilinx/platforms/xilinx_vck5000_gen4x8_xdma_2_202210_1/hw/xilinx_vck5000_gen4x8_xdma_2_202210_1.xsa
+endif
 
 TARGET := hw
 

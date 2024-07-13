@@ -1,25 +1,49 @@
-# MIT License
+#!/bin/bash
 
-# Copyright (c) 2023 Paolo Salvatore Galfano, Giuseppe Sorrentino
+# Function to print the correct usage of the script
+print_usage() {
+    echo "Usage: $0 [--shell <qdma|xdma>]"
+    echo "Options:"
+    echo "  --shell <qdma|xdma>   Specify the shell environment to enable"
+    exit 1
+}
 
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
+# Variables for the paths of configuration scripts
+VITIS_22_1="/xilinx/software/Vitis/2022.1/settings64.sh"
+VITIS_22_2="/xilinx/software/Vitis/2022.2/settings64.sh"
 
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
+# Variable for the --shell parameter, defaulting to null
+SHELL_PARAM=null
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+# Parsing the arguments passed to the script
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+        --shell)
+            SHELL_PARAM="$2"
+            shift # move to the value of --shell
+            shift # move to the next argument
+            ;;
+        *)
+            # Unknown option
+            echo "Error: Unknown option $1"
+            print_usage
+            ;;
+    esac
+done
 
-source /opt/xilinx/xrt/setup.sh
-source /home/xilinx/software/Vitis/2022.2/settings64.sh
+# Check if the --shell parameter was specified correctly
+if [[ "$SHELL_PARAM" != "qdma" && "$SHELL_PARAM" != "xdma" ]]; then
+    echo "Error: Please specify --shell with 'qdma' or 'xdma'"
+    print_usage
+fi
+
+# Choose which configuration script to source based on --shell
+if [[ "$SHELL_PARAM" == "qdma" ]]; then
+    source "$VITIS_22_2"
+else
+    source "$VITIS_22_1"
+fi
+
+# Enable the devtoolset-7 development environment
 scl enable devtoolset-7 bash
