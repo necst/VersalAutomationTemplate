@@ -21,7 +21,7 @@ src - contains the code.
 
 _make aie_compile_x86_ : compile your code for x86 architecture.  
 _make aie_simulate_x86_ : simulate your x86 architecture.  
-_make aie_compile_ : compile your code for VLIW architecture, as your final hardware for HW ad HW_EMU.  
+_make aie_compile SHELL_NAME=< qdma|xdma >_ : compile your code for VLIW architecture, as your final hardware for HW ad HW_EMU. 
 _make aie_simulate_ : simulate your code for VLIW architecture, as your final hardware.  
 _make clean_ : removes all the output file created by the commands listed above.  
 
@@ -31,7 +31,7 @@ testbench : it contains a testbench for each kernel
 
 **Main Commands**
 
-_make compile TARGET=HW/HW_EMU_: it compiles all your kernel, skipping the ones already compiled.  
+_make compile TARGET=HW/HW_EMU_ _SHELL_NAME=< qdma|xdma >_ : it compiles all your kernel, skipping the ones already compiled.  
 _make run_testbench_setup_aie_ : compiles and execute the testbench for the kernel setup_aie.  
 _make run_testbench_sink_from_aie_ : compiles and execute the testbench for the kernel setup_aie.  
 
@@ -41,7 +41,7 @@ Contains the cfg file required to link the components. For the Versal case, you 
 
 **Main Commands**
 
-_make all TARGET=HW/HW_EMU_ : it builds the hardware or the hardware emu linking your componentsEMU TARGET=HW/HW_EMU
+_make all TARGET=HW/HW_EMU SHELL_NAME=< qdma|xdma >_  : it builds the hardware or the hardware emu linking your componentsEMU TARGET=HW/HW_EMU
 make clean: it removes all files.
 
 ### Sw
@@ -51,7 +51,7 @@ Once you have devised your accelerator, you need to create the host code for usi
 **Main Commands**
 _make build_sw_ : it compiles the sw
 
-_./setup_emu.sh -s on_ : enables the hardware emulation
+_./setup_emu.sh -s on --shell =< qdma|xdma >_ : enables the hardware emulation
 
 i.e.: make build_sw && ./setup_emu.sh && ./host_overlay.exe : this will compile, prepare the emulation, and run it.
 
@@ -59,4 +59,4 @@ i.e.: make build_sw && ./setup_emu.sh && ./host_overlay.exe : this will compile,
 ## General useful commands:
 If you need to move your bitstream and executable on the target machine, you may want it prepared in a single folder that contains all the required stuff to be moved. In this case, you can use the
 
-_make build_and_pack TARGET=hw/hw_emu_ :  it allows you to pack our build in a single folder. Notice that the hw_emu does not have to be moved on the device, it must be executed on the development machine.
+_make build_and_pack TARGET=hw/hw_emu SHELL_NAME=< qdma|xdma >_ :  it allows you to pack our build in a single folder. Notice that the hw_emu does not have to be moved on the device, it must be executed on the development machine.
